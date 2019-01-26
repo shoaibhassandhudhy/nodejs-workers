@@ -1,0 +1,26 @@
+{
+  "name": "node_worker",
+  "version": "1.0.0",
+  "description": "Workers time stamp management",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/masoodtalha/nodejs-workers.git"
+  },
+  "author": "wasif",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/masoodtalha/nodejs-workers/issues"
+  },
+  "homepage": "https://github.com/masoodtalha/nodejs-workers#readme",
+  "dependencies": {
+    "async": "^2.6.1",
+    "express": "^4.16.4",
+    "moment": "^2.24.0",
+    "mongodb": "^3.1.13",
+    "mongoose": "^5.4.6"
+  }
+}
