@@ -8,6 +8,7 @@ const async = require('async');
 
 const app = express()
 const port = 3000
+const emails = []
 
 var one_two = []
 var two_three = []
@@ -18,6 +19,7 @@ MongoClient.connect(url, function(err, db) {
 
     var update_lastActivity_time_stamp = function(users){
         users.forEach(user => {
+            emails.push(user['email']);
             diff = moment.duration(end.diff(moment(user['lastActivity'])));
             user_activity = diff.asMinutes();
 
@@ -27,6 +29,16 @@ MongoClient.connect(url, function(err, db) {
                 },
                 { upsert: true });
         });
+    }
+
+    var update_users = function(s){
+        var count = users.find({}).skip(s).count();
+        if(count == 0){
+            return;
+        }
+        var db_users = users.find({}).skip(s).limit(10);
+        update_lastActivity_time_stamp(db_users);
+        update_users(s+10);
     }
 
     var set_user = function(users){
@@ -48,13 +60,12 @@ MongoClient.connect(url, function(err, db) {
 
         async.waterfall([
             function(callback){
-                var db_users = users.find({}).limit(10);
-                update_lastActivity_time_stamp(db_users);
+                update_users(0);
                 callback();
             },
             function(callback,users){
                 setInterval(function() {
-                    var db_users = users.find({});
+                    var db_users = users.find({'email':{ $in: emails}});
                     set_users(db_users);
                 }, 60 * 1000);
             }
